@@ -18,11 +18,11 @@ class BaseStorage {
   }
 
   isFull() {
-    return this.storage.length === this.maxSize ? true : false;
+    return this.storage.length === this.maxSize;
   }
 
   isEmpty() {
-    return this.storage.length === 0 ? true : false;
+    return this.storage.length === 0;
   }
   toArray() {
     return [...this.storage];
@@ -67,8 +67,8 @@ class Stack extends BaseStorage {
 
     const stack = new Stack(iterable.length);
 
-    for (let i = 0; i < iterable.length; i++) {
-      stack.push(iterable[i]);
+    for (const elem of iterable) {
+      stack.push(elem);
     }
 
     return stack;
@@ -85,23 +85,18 @@ class Queue extends BaseStorage {
       throw new Error("Error! Queue is full.");
     }
 
-    const newArray = [elem];
-
-    for (let i = 1; i <= this.storage.length; i++) {
-      newArray[i] = this.storage[i - 1];
-    }
-    this.storage = [...newArray];
+    this.storage[this.storage.length] = elem;
   }
 
   shift() {
     if (this.isEmpty()) throw new Error("Error! Queue is empty");
 
-    const shiftedElem = this.storage[this.storage.length - 1];
+    const shiftedElem = this.storage[0];
 
     const newArray = [];
 
-    for (let i = 0; i < this.storage.length - 1; i++) {
-      newArray[i] = this.storage[i];
+    for (let i = 1; i < this.storage.length; i++) {
+      newArray[i - 1] = this.storage[i];
     }
     this.storage = [...newArray];
 
@@ -109,8 +104,40 @@ class Queue extends BaseStorage {
   }
 
   peek() {
-    return this.isEmpty() ? null : this.storage[this.storage.length - 1];
+    return this.isEmpty() ? null : this.storage[0];
   }
+
+  // push(elem) {
+  //   if (this.isFull()) {
+  //     throw new Error("Error! Queue is full.");
+  //   }
+
+  //   const newArray = [elem];
+
+  //   for (let i = 1; i <= this.storage.length; i++) {
+  //     newArray[i] = this.storage[i - 1];
+  //   }
+  //   this.storage = [...newArray];
+  // }
+
+  // shift() {
+  //   if (this.isEmpty()) throw new Error("Error! Queue is empty");
+
+  //   const shiftedElem = this.storage[this.storage.length - 1];
+
+  //   const newArray = [];
+
+  //   for (let i = 0; i < this.storage.length - 1; i++) {
+  //     newArray[i] = this.storage[i];
+  //   }
+  //   this.storage = [...newArray];
+
+  //   return shiftedElem;
+  // }
+
+  // peek() {
+  //   return this.isEmpty() ? null : this.storage[this.storage.length - 1];
+  // }
 
   static fromIterable(iterable) {
     if (typeof iterable[Symbol.iterator] !== "function")
@@ -118,8 +145,8 @@ class Queue extends BaseStorage {
 
     const queue = new Queue(iterable.length);
 
-    for (let i = 0; i < iterable.length; i++) {
-      queue.push(iterable[i]);
+    for (const elem of iterable) {
+      queue.push(elem);
     }
 
     return queue;
